@@ -1,0 +1,30 @@
+version: "3.8"
+services: 
+  api:
+    build: ./api
+    container_name: api_container
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./api:/api
+  mywebb:
+    build: ./mywebb
+    container_name: mywebb_container
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./mywebb:/app
+  myapp: 
+    build: ./myapp
+    container_name: myapp_container
+    ports:
+      - '19000:19000'
+      - '19001:19001'
+      - '19002:19002'
+      - '8081:8081'
+    volumes:
+      - ./myapp:/app
+    stdin_open: true
+    tty: true
