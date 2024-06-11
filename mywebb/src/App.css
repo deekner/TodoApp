@@ -1,38 +1,292 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: #121212; /* Darker background */
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Container for tasks */
+.TodoWrapper {
+  background: #252525;
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Individual task styling */
+.Todo {
+  background-color: #333333; 
+  padding: 20px;
+  border-top: solid rgb(72, 145, 76);
+  border-radius: 8px;
+  height: 200px;
+  position: relative;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   display: flex;
   flex-direction: column;
+  gap: 10px; 
+}
+
+.Todo h1, .Todo p {
+  margin: 0;
+}
+
+/* Task title styling */
+.Todo h1 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Task description or additional text */
+.Todo p {
+  font-size: 0.9rem;
+  color: #cccccc;
+  margin-top: 0.5rem;
+  flex: 1; /* Make description take up remaining space */
+  overflow: hidden; /* Hide overflow content */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+.Todo-icon {
+  display: flex;
+  align-items: center; /* Center the icon vertically */
+  justify-content: center; /* Center the icon horizontally */
+  width: 10px; /* Adjust width to fit the icon size */
+  height: 10px; /* Adjust height to fit the icon size */
+  cursor: pointer;
+}
+.Todo-icon:hover{
+  cursor: pointer; /* Ensure cursor pointer is only on the icon */
+}
+
+.TodoForm {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.todo-input {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-right: 0; /* Add margin to the right to separate the input from the button */
+  flex: 1; /* Allows the input to take up the remaining space */
+  color: #fff;
+}
+
+.todo-btn {
+  background: #8758ff;
+  color: #fff;
+  border: none;
+  margin-top: 1rem;
+  margin-left: 5px;
+  margin-bottom: 1.3rem;
+  padding: 0.66rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.todo-btn:hover {
+  background: #aa8afc
+}
+
+.Todo-Details {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+}
+
+/* Hover effects for buttons and icons */
+button:hover, .fa-icon:hover {
+  color: #BBBBBB; /* Lighten on hover */
+}
+
+/* Input styling for adding tasks */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #222222;
+  border: 1px solid #444444;
+  border-radius: 4px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Button to add tasks */
+button.add-task {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+button.add-task:hover {
+  background-color: #367C2B;
+}
+
+/* Modifications for smaller screen sizes */
+@media (max-width: 600px) {
+  .TodoWrapper {
+    grid-template-columns: 1fr; /* Full width cards on smaller screens */
   }
 }
+
+.complete-button {
+  background: none;
+  border: none;
+  padding: 0;
+  display: inline-block;
+}
+.complete-button:hover {
+  background: none; 
+}
+
+.Todo-actions {
+  align-self: flex-end;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  bottom: 10px; 
+  right: 10px; 
+  width: auto;
+}
+
+
+.fa-trash {
+  margin-left: 0.75rem;
+  cursor: pointer;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #383838;
+  width: 600px; 
+  height: 500px; 
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000;
+  color: white; 
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.modal-title input {
+  margin-bottom: px;
+  margin-left: 10px;
+}
+
+.modal-description {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  overflow-y: auto;
+}
+
+.modal-description-content {
+  background: #272727; /* Slightly darker background */
+  color: #fff; /* Text color */
+  padding: 1rem;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 100%;
+  width: 537px; /* Fixed width */
+  height: 240px; /* Fixed height */
+  overflow-y: auto; /* Allows scrolling if content overflows */
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1); /* Inner shadow for a box effect */
+}
+
+.modal-description-content-input {
+  width: 500px; /* Fixed width */
+  height: 175px; /* Fixed height */
+}
+
+.modal-close-btn {
+  background: #8b0000;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.modal-save-btn {
+  background: #6a4add;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  right: 110px;
+}
+
+.modal-close-btn:hover {
+  background: #e03f3f;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  -webkit-transition: background-color 0.3s ease, transform 0.3s ease;
+  -moz-transition: background-color 0.3s ease, transform 0.3s ease;
+  -ms-transition: background-color 0.3s ease, transform 0.3s ease;
+  -o-transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.modal-save-btn:hover {
+  background: #235c1b;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  -webkit-transition: background-color 0.3s ease, transform 0.3s ease;
+  -moz-transition: background-color 0.3s ease, transform 0.3s ease;
+  -ms-transition: background-color 0.3s ease, transform 0.3s ease;
+  -o-transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+

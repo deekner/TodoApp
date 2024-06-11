@@ -1,22 +1,54 @@
-version: "3.8"
-services: 
+services:
+  database:
+    command: --max-allowed-packet=64MB
+    container_name: api-database
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - data:/var/lib/mysql
+    networks:
+      - dev
+    ports: 
+      - '3306:3306'
+
+  adminer:
+    container_name: api-adminer
+    image: adminer
+    ports:
+        - 8082:8080
+    networks:
+        - dev
+    depends_on:
+        - database
+
   api:
     build: ./api
     container_name: api_container
     ports:
-      - '4000:4000'
+      - '4000:80'
     volumes:
-      - ./api:/api
+      - ./api/symfony_project:/var/www
+    networks:
+      - dev
+
   mywebb:
-    build: ./mywebb
+    build: 
+      context: ./mywebb
+      dockerfile: Dockerfile
     container_name: mywebb_container
+    environment:
+      - PORT=3000
     ports:
       - '3000:3000'
     stdin_open: true
     tty: true
     volumes:
       - ./mywebb:/app
-  myapp: 
+    networks:
+      - dev
+
+  myapp:
     build: ./myapp
     container_name: myapp_container
     ports:
@@ -28,3 +60,13 @@ services:
       - ./myapp:/app
     stdin_open: true
     tty: true
+    networks:
+      - dev
+
+networks:
+  app-network:
+    driver: bridge
+  dev: 
+
+volumes:
+  data:
