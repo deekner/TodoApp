@@ -16,29 +16,30 @@ export const TodoWrapper = () => {
       axios.get('http://localhost:4000/api/todos')
           .then(res => {
               console.log("API Data:", res.data);
-              setTodos(res.data);
+              setTodos(res.data); // Update the state with the list of todos
           })
           .catch(e => console.log(e));
     }, []);
 
     const handleTaskAdded = (newTask) => {
       console.log('New Task:', newTask);
-      setTodos(prevTodos => [...prevTodos, newTask]);
+      setTodos(prevTodos => [...prevTodos, newTask]); // Update the state with the new task added to the list of previous todos
     };
 
     
     const deleteTask = (id) => {
       axios.delete(`http://localhost:4000/api/todos/${id}`)
           .then(() => {
-              setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+              setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id)); // Update the state by filtering out the deleted task
           })
           .catch(e => console.error('Error deleting task:', e));
     };
 
     const handleTaskUpdated = updatedTask => {
 
-      console.log('Updated Task Payload:', updatedTask); // Log the payload
+      console.log('Updated Task Payload:', updatedTask);
 
+      // Prepare the payload for the PUT request
       const payload = {
           title: updatedTask.title,
           description: updatedTask.description,
@@ -47,17 +48,17 @@ export const TodoWrapper = () => {
   
       axios.put(`http://localhost:4000/api/todos/${updatedTask.id}`, payload, {
           headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json' // Set the request headers
           }
       })
           .then(response => {
             console.log('Server Response:', response.data); // Log the server response
-              setTodos(prevTodos =>
+              setTodos(prevTodos => // Update the state with the updated task
                   prevTodos.map(todo => 
                       todo.id === updatedTask.id ? updatedTask : todo
                   )
               );
-              setIsEditModalOpen(false); // Close the edit modal after updating the task
+              setIsEditModalOpen(false); 
           })
           .catch(error => {
               console.error("There was an error updating the task!", error);
@@ -89,14 +90,17 @@ export const TodoWrapper = () => {
           });
       };
 
+
+    // Function to open the modal and set the selected task
     const openModal = (task) => {
-      setSelectedTask(task);
+      setSelectedTask(task); // Set the selected task
       setModalIsOpen(true);
     };
-
+    
+    // Function to close the modal and clear the selected task
     const closeModal = () => {
-      setModalIsOpen(false);
-      setSelectedTask(null);
+      setModalIsOpen(false); // Close the modal
+      setSelectedTask(null); // Clear the selected task
     };
 
     const OpenEditModal = (task) => {
